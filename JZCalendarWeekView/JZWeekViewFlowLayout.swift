@@ -37,7 +37,7 @@ open class JZWeekViewFlowLayout: UICollectionViewFlowLayout {
     open var defaultCurrentTimeLineHeight: CGFloat { return 10 }
     open var defaultAllDayOneLineHeight: CGFloat { return 30 }
     /// Margin for the flowLayout in collectionView
-    open var contentsMargin: UIEdgeInsets { return UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0) }
+    open var contentsMargin: UIEdgeInsets { return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) }
     open var itemMargin: UIEdgeInsets { return UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1) }
     /// weekview contentSize height
     open var maxSectionHeight: CGFloat { 
