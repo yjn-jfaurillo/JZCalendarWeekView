@@ -97,7 +97,7 @@ open class JZBaseWeekView: UIView {
         collectionView.dataSource = self
         collectionView.isDirectionalLockEnabled = true
         collectionView.bounces = false
-        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = true
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = UIColor.white
         addSubview(collectionView)

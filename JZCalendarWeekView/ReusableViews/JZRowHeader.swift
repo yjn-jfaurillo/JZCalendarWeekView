@@ -31,12 +31,21 @@ open class JZRowHeader: UICollectionReusableView {
     open func setupBasic() {
         // Hide all content when colum header height equals 0
         self.clipsToBounds = true
-        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.dateFormat = "h a"
         lblTime.textColor = JZWeekViewColors.rowHeaderTime
         lblTime.font = UIFont.systemFont(ofSize: 12)
-    }
+        let view = CALayer()
+        view.frame = CGRect(x: 0, y: 0, width: 45, height: 50)
+        view.backgroundColor = UIColor.white.cgColor
+        layer.insertSublayer(view, at: 0)    }
     
     public func updateView(date: Date) {
+        if dateFormatter.string(from: date) == "12 AM"{
+            lblTime.textColor = .clear
+        }else{
+            lblTime.textColor = .black
+        }
+        
         lblTime.text = dateFormatter.string(from: date)
     }
     

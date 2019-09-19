@@ -13,8 +13,9 @@ open class JZColumnHeader: UICollectionReusableView {
     
     public var lblDay = UILabel()
     public var lblWeekday = UILabel()
-    let calendarCurrent = Calendar.current
+    public var calendarCurrent = Calendar.current
     public var dateFormatter = DateFormatter()
+    public var columnDate = Date()
     
     public override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -26,12 +27,16 @@ open class JZColumnHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupUI() {
+    open func setupUI() {
         // Hide all content when colum header height equals 0
         self.clipsToBounds = true
         let stackView = UIStackView(arrangedSubviews: [lblWeekday, lblDay])
+        let view = CALayer()
+        view.frame = CGRect(x: 0, y: 0, width: 50, height: 95)
+        view.backgroundColor = UIColor.white.cgColor
+        layer.insertSublayer(view, at: 0)
         stackView.axis = .vertical
-        stackView.spacing = 2
+        stackView.spacing = 10
         addSubview(stackView)
         stackView.setAnchorConstraintsEqualTo(centerXAnchor: centerXAnchor, centerYAnchor: centerYAnchor)
         lblDay.textAlignment = .center
@@ -40,19 +45,50 @@ open class JZColumnHeader: UICollectionReusableView {
         lblWeekday.font = UIFont.systemFont(ofSize: 12)
     }
     
-    public func updateView(date: Date) {
+    // FIXME: - Fork library 
+    open func updateView(date: Date) {
+        print("----- \(date)")
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = .current
+        dateFormatter.dateFormat = "MMMM dd, yyyy"
+        columnDate = dateFormatter.date(from: dateFormatter.string(from: date)) ?? Date()
         let weekday = calendarCurrent.component(.weekday, from: date) - 1
         
         lblDay.text = String(calendarCurrent.component(.day, from: date))
-        lblWeekday.text = dateFormatter.shortWeekdaySymbols[weekday].uppercased()
+        lblWeekday.text = dateFormatter.veryShortWeekdaySymbols[weekday].uppercased()
         
-        if date.isToday {
-            lblDay.textColor = JZWeekViewColors.today
-            lblWeekday.textColor = JZWeekViewColors.today
+        guard let stackView = subviews.first as? UIStackView else { return }
+        let size = CGFloat(35)        
+        if stackView.layer.sublayers?.contains(where: { $0.name == "circleLayer" }) == false, date.isToday {
+            let circleLayer = CALayer()
+            circleLayer.frame = CGRect(origin: CGPoint(x: -(size/4), y: lblDay.frame.origin.y  - (size/4) + 1), size: CGSize(width: 35, height: 35))
+            circleLayer.contentsCenter = lblDay.frame
+            circleLayer.backgroundColor = UIColor.yellow.cgColor
+            
+            circleLayer.cornerRadius = size/2
+            circleLayer.name = "circleLayer"
+            stackView.layer.insertSublayer(circleLayer, at: 0)
+            
+            
         } else {
-            lblDay.textColor = JZWeekViewColors.columnHeaderDay
-            lblWeekday.textColor = JZWeekViewColors.columnHeaderDay
+            stackView.layer.sublayers?.first(where: { $0.name == "circleLayer" })?.removeFromSuperlayer()
         }
+        
+        
+        
+//        if date.isToday {
+//
+//            lblDay.textColor = JZWeekViewColors.today
+//            lblWeekday.textColor = JZWeekViewColors.today
+//        } else {
+//            lblDay.textColor = JZWeekViewColors.columnHeaderDay
+//            lblWeekday.textColor = JZWeekViewColors.columnHeaderDay
+//        }
+    }
+    
+    func reloadStackView() {
+        
     }
     
 }

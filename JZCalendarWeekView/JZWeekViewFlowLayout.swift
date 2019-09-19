@@ -6,6 +6,8 @@
 //  Inspired and followed by WRCalendarView (https://github.com/wayfinders/WRCalendarView)
 //
 
+import UIKit
+
 public protocol WeekViewFlowLayoutDelegate: class {
     /// Get the date for given section
     func collectionView(_ collectionView: UICollectionView, layout: JZWeekViewFlowLayout, dayForSection section: Int) -> Date
@@ -340,8 +342,8 @@ open class JZWeekViewFlowLayout: UICollectionViewFlowLayout {
         (attributes, verticalGridlineAttributes) = layoutAttributesForDecorationView(at: IndexPath(item: 0, section: section),
                                                                                      ofKind: JZDecorationViewKinds.verticalGridline,
                                                                                      withItemCache: verticalGridlineAttributes)
-        attributes.frame = CGRect(x: (sectionX - defaultGridThickness / 2.0).toDecimal1Value(), y: calendarGridMinY,
-                                  width: defaultGridThickness, height: sectionHeight)
+        attributes.frame = CGRect(x: (sectionX - defaultGridThickness / 2.0).toDecimal1Value(), y: calendarGridMinY - 20,
+                                  width: defaultGridThickness, height: sectionHeight + 20)
         attributes.zIndex = zIndexForElementKind(JZDecorationViewKinds.verticalGridline)
     }
     
@@ -359,8 +361,8 @@ open class JZWeekViewFlowLayout: UICollectionViewFlowLayout {
             let horizontalGridlineMinY = (calendarStartY + (hourHeight * CGFloat(hour))) - (defaultGridThickness / 2.0).toDecimal1Value()
             let horizontalGridlineWidth = fmin(calendarGridWidth, collectionView!.frame.width)
             
-            attributes.frame = CGRect(x: horizontalGridlineMinX, y: horizontalGridlineMinY,
-                                      width: horizontalGridlineWidth, height: defaultGridThickness)
+            attributes.frame = CGRect(x: horizontalGridlineMinX - 20, y: horizontalGridlineMinY,
+                                      width: horizontalGridlineWidth + 20, height: defaultGridThickness)
             attributes.zIndex = zIndexForElementKind(JZDecorationViewKinds.horizontalGridline)
             horizontalGridlineIndex += 1
             

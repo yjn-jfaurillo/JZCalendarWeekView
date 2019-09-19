@@ -80,6 +80,7 @@ open class JZWeekViewHelper {
         var resultEvents = [Date: [T]]()
         for event in originalEvents {
             let startDateStartDay = event.startDate.startOfDay
+            print("AHHHHHHHHHHHHH \(event.startDate) - \(event.endDate)")
             // get days from both startOfDay, otherwise 22:00 - 01:00 case will get 0 daysBetween result
             let daysBetween = Date.daysBetween(start: startDateStartDay, end: event.endDate, ignoreHours: true)
             if daysBetween == 0 {
